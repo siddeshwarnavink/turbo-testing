@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import sidd33.turboengine.forms.annotation.FormField;
+import sidd33.turboengine.forms.annotation.MaxFileSize;
+import sidd33.turboengine.forms.annotation.MinFileSize;
 import sidd33.turboengine.forms.type.FormData;
 import sidd33.turboengine.forms.type.FormFieldType;
 
@@ -24,7 +26,8 @@ public class TestForm implements FormData {
     private String bio;
 
     @FormField(label = "Image file", fieldType = FormFieldType.FILEINPUT)
-    @NotNull(message = "File is required")
+    @MinFileSize(message = "Image is required")
+    @MaxFileSize(max = 512_000, message = "Image should not exceed 500kb")
     private MultipartFile file;
 
     public MultipartFile getFile() {
