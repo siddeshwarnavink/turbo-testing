@@ -7,7 +7,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import sidd33.turboengine.forms.annotation.FormField;
 import sidd33.turboengine.forms.annotation.MaxFileSize;
+import sidd33.turboengine.forms.annotation.MinFileCount;
 import sidd33.turboengine.forms.annotation.MinFileSize;
+import sidd33.turboengine.forms.annotation.MaxFileCount;
 import sidd33.turboengine.forms.type.FormData;
 import sidd33.turboengine.forms.type.FormFieldType;
 
@@ -30,7 +32,21 @@ public class TestForm implements FormData {
     @MaxFileSize(max = 512_000, message = "Image should not exceed 500kb")
     private MultipartFile file;
 
-    public MultipartFile getFile() {
+    @FormField(label = "Multiple file", fieldType = FormFieldType.FILEINPUT)
+    @MaxFileSize(max = 512_000, message = "Images should not exceed 500kb") 
+    @MinFileCount(length = 2, message = "Atleast 2 file is needed")
+    @MaxFileCount(length = 4, message = "We don't need more than 4 files")
+    private MultipartFile[] multifile;
+
+	public MultipartFile[] getMultifile() {
+		return multifile;
+	}
+
+	public void setMultifile(MultipartFile[] multifile) {
+		this.multifile = multifile;
+	}
+
+	public MultipartFile getFile() {
         return file;
     }
 
@@ -70,6 +86,7 @@ public class TestForm implements FormData {
                 "name='" + name + '\'' +
                 ", dob=" + dob +
                 ", file=" + file +
+                ", multifile=" + multifile +
                 ", bio='" + bio + '\'' +
                 '}';
     }

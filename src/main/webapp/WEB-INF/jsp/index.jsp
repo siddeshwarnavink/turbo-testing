@@ -13,6 +13,7 @@
             <turboforms:control name="name" hint="Please use real name" />
             <turboforms:control name="dob" minDate="today" />
             <turboforms:control name="file" accept="image/png, image/jpg"  hint="Please use real face" />
+            <turboforms:control name="multifile" accept="image/png, image/jpg" multiple="multiple" />
             <turboforms:control name="bio" />
 
             <button class="btn btn-primary" type="submit">Submit</button>
