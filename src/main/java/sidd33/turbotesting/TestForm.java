@@ -5,14 +5,18 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.ToString;
 import sidd33.turboengine.forms.annotation.FormField;
+import sidd33.turboengine.forms.annotation.MaxFileCount;
 import sidd33.turboengine.forms.annotation.MaxFileSize;
 import sidd33.turboengine.forms.annotation.MinFileCount;
 import sidd33.turboengine.forms.annotation.MinFileSize;
-import sidd33.turboengine.forms.annotation.MaxFileCount;
 import sidd33.turboengine.forms.type.FormData;
 import sidd33.turboengine.forms.type.FormFieldType;
 
+@Data
+@ToString
 public class TestForm implements FormData {
     @FormField(label = "Name", fieldType = FormFieldType.TEXT)
     @NotEmpty(message = "Name is required")
@@ -37,57 +41,4 @@ public class TestForm implements FormData {
     @MinFileCount(length = 2, message = "Atleast 2 file is needed")
     @MaxFileCount(length = 4, message = "We don't need more than 4 files")
     private MultipartFile[] multifile;
-
-	public MultipartFile[] getMultifile() {
-		return multifile;
-	}
-
-	public void setMultifile(MultipartFile[] multifile) {
-		this.multifile = multifile;
-	}
-
-	public MultipartFile getFile() {
-        return file;
-    }
-
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public long getDob() {
-        return dob;
-    }
-
-    public void setDob(String dateTimeString) {
-        if (dateTimeString != null && !dateTimeString.isEmpty()) {
-            this.dob = Long.parseLong(dateTimeString);
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "TestForm{" +
-                "name='" + name + '\'' +
-                ", dob=" + dob +
-                ", file=" + file +
-                ", multifile=" + multifile +
-                ", bio='" + bio + '\'' +
-                '}';
-    }
 }
