@@ -1,5 +1,9 @@
 package sidd33.turbotesting;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,16 +17,19 @@ import jakarta.validation.Valid;
 import sidd33.turboengine.forms.annotation.WithForm;
 
 @Controller
-@RequestMapping("/test")
+@RequestMapping("/")
 public class TestController {
-    @GetMapping("/")
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @GetMapping("/form")
     @WithForm(TestForm.class)
     public String getTestRoot(Model model) {
         model.addAttribute("formData", new TestForm());
-        return "index";
+        return "form";
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "/form")
     @WithForm(TestForm.class)
     public ModelAndView postTestRoot(@Valid TestForm formData, BindingResult result) {
         System.out.println(formData);
@@ -30,12 +37,26 @@ public class TestController {
         ModelAndView modelAndView = new ModelAndView();
 
         if (result.hasErrors()) {
-            modelAndView.setViewName("index");
+            modelAndView.setViewName("form");
             modelAndView.addObject("formData", formData);
             return modelAndView;
         }
 
         modelAndView.setView(new MappingJackson2JsonView());
         return modelAndView;
+    }
+
+    private List<ProductDto> getProducts() {
+        String sql = "SELECT * FROM products";
+        List<ProductDto> products = jdbcTemplate.query(sql, new ProductRowMapper());
+        return products;
+    }
+
+    @GetMapping(value = "/datatable")
+    public String getTable(Model model) {
+        List<ProductDto> products = getProducts();
+        model.addAttribute("products", products);
+
+        return "table";
     }
 }
